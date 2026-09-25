@@ -48,7 +48,7 @@ omit = ["*/migrations/*", "*/__init__.py"]
 [tool.coverage.paths]
 source = [
     ".",
-    "*/WuLims",
+    "*/wuchem",
 ]
 
 [tool.coverage.report]

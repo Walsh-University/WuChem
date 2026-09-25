@@ -2,18 +2,18 @@
 {% load static %}
 
 {% block title %}
-  {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | WuLims Admin
+  {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | wuchem Admin
 {% endblock %}
 
 {% block extrastyle %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'css/admin.wulims.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/admin.wuchem.min.css' %}">
 {% endblock %}
 
 {% block branding %}
-  <h1 id="site-name"><a href="{% url 'admin:index' %}">WuLims Administration</a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">wuchem Administration</a></h1>
 {% endblock %}
 
 {% block nav-global %}
-  <a class="wulims-admin-back-link" href="{% url 'lims_core:dashboard' %}">Back to WuLims App</a>
+  <a class="wuchem-admin-back-link" href="{% url 'lims_core:dashboard' %}">Back to wuchem App</a>
 {% endblock %}
