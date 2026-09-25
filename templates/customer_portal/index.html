@@ -1,0 +1,85 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Portal</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.wulims.min.css' %}">
+</head>
+<body class="bg-body-tertiary">
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <p class="text-uppercase small text-secondary mb-1">WuLims</p>
+        <h1 class="h3 mb-0">Customer Portal</h1>
+      </div>
+      <form method="post" action="{% url 'logout' %}" class="m-0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">Logout</button>
+      </form>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h5">Welcome, {{ request.user.display_name }}</h2>
+        {% if is_customer_contact %}
+        <p class="text-secondary mb-4">Your account is verified and ready for customer portal workflows.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+              <h3 class="h6">Account status</h3>
+              <p class="mb-0">Verified{% if is_customer_contact %} as a customer contact{% endif %}.</p>
+            </div>
+        {% else %}
+            <p class="text-secondary mb-4">You are not a customer contact.</p>
+            <div class="row g-3">
+            <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+                <h3 class="h6">Account status</h3>
+                <p class="mb-0">You are not a customer contact.  This portal is for external customers.</p>
+            </div>
+        {% endif %}
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+              {% if is_customer_contact %}
+                <h3 class="h6">Company profile</h3>
+                {% if company_profile %}
+                  <p class="mb-2"><strong>{{ company_profile.customer_name }}</strong></p>
+                  <p class="mb-1 text-secondary">Customer ID: {{ company_profile.external_id }}</p>
+                  <p class="mb-3 text-secondary">Type: {{ company_profile.customer_type }}</p>
+                  <a href="{% url 'customer_portal:company_profile' %}" class="btn btn-outline-primary btn-sm">Edit company profile</a>
+                {% else %}
+                  <p class="mb-3">Set up your company profile before submitting project requests.</p>
+                  <a href="{% url 'customer_portal:company_profile' %}" class="btn btn-primary btn-sm">Create company profile</a>
+                {% endif %}
+              {% else %}
+                <h3 class="h6">Next step</h3>
+                <p class="mb-0">Portal-specific project request workflows can be added here without changing the sign-up or verification flow.</p>
+              {% endif %}
+            </div>
+          </div>
+          {% if is_customer_contact %}
+          <div class="col-md-6">
+            <div class="border rounded p-3 h-100">
+              <h3 class="h6">Contact profile</h3>
+              {% if contact_profile %}
+                <p class="mb-2"><strong>{{ contact_profile }}</strong></p>
+                <p class="mb-1 text-secondary">Title: {{ contact_profile.get_title_display|default:"Not provided" }}</p>
+                <p class="mb-1 text-secondary">Job title: {{ contact_profile.job_title|default:"Not provided" }}</p>
+                <p class="mb-3 text-secondary">Status: {% if contact_profile.is_active %}Active{% else %}Inactive{% endif %}</p>
+                <a href="{% url 'customer_portal:contact_profile' %}" class="btn btn-outline-primary btn-sm">Edit contact profile</a>
+              {% else %}
+                <p class="mb-3">Set up your contact profile so the lab knows who to reach at your company.</p>
+                <a href="{% url 'customer_portal:contact_profile' %}" class="btn btn-primary btn-sm">Create contact profile</a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
