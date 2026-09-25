@@ -1,0 +1,32 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · WuChem</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.wulims.min.css' %}">
+</head>
+<body class="auth-page">
+  <main class="auth-panel">
+    <div class="brand-mark" aria-hidden="true">W</div>
+    <p class="eyebrow">University chemistry laboratories</p>
+    <h1>Sign in to WuChem</h1>
+    <p class="text-secondary">Chemical inventory and safety information for our campus labs.</p>
+    {% if form.errors %}<div class="alert alert-danger">Your username or password was not recognized.</div>{% endif %}
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <div class="mb-3">
+        <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+        <input class="form-control form-control-lg" type="text" name="username" autocomplete="username" autofocus required id="{{ form.username.id_for_label }}">
+      </div>
+      <div class="mb-4">
+        <label class="form-label" for="{{ form.password.id_for_label }}">Password</label>
+        <input class="form-control form-control-lg" type="password" name="password" autocomplete="current-password" required id="{{ form.password.id_for_label }}">
+      </div>
+      <button class="btn btn-primary btn-lg w-100" type="submit">Sign in</button>
+    </form>
+  </main>
+</body>
+</html>

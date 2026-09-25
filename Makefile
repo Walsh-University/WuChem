@@ -1,3 +1,3 @@
 css:
-	sass assets/scss/wuchem.scss static/css/bootstrap.wuchem.min.css --style=compressed
-	sass assets/scss/admin.wuchem.scss static/css/admin.wuchem.min.css --style=compressed --sourcemap=none
+	sass assets/scss/wulims.scss static/css/bootstrap.wulims.min.css --style=compressed
+	sass assets/scss/admin.wulims.scss static/css/admin.wulims.min.css --style=compressed --sourcemap=none

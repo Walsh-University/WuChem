@@ -66,31 +66,21 @@ INSTALLED_APPS = [
     "django_structlog",
     "djangosaml2",
     # local apps
-    "accounts",
-    "experiments.apps.ExperimentsConfig",
-    "lims_core",
-    "projects",
-    "samples",
-    "instruments",
-    "audit",
-    "customers.apps.CustomersConfig",
-    "results.apps.ResultsConfig",
+    "accounts.apps.AccountsConfig",
+    "chem_core",
 ]
 
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    "audit.middleware.RequestIDMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django_structlog.middlewares.RequestMiddleware",
-    "accounts.audit.RoleAuditActorMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "audit.middleware.AuditUserMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -107,7 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "lims_core.context_processors.auth_context",
+                "chem_core.context_processors.auth_context",
             ],
         },
     },
@@ -208,7 +198,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "samples:list"
+LOGIN_REDIRECT_URL = "chem_core:dashboard"
 LOGOUT_REDIRECT_URL = "login"
 
 if SAML_ENABLED:

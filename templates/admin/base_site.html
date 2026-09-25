@@ -7,7 +7,7 @@
 
 {% block extrastyle %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'css/admin.wuchem.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/admin.wulims.min.css' %}">
 {% endblock %}
 
 {% block branding %}
@@ -15,5 +15,5 @@
 {% endblock %}
 
 {% block nav-global %}
-  <a class="wuchem-admin-back-link" href="{% url 'lims_core:dashboard' %}">Back to wuchem App</a>
+  <a class="wuchem-admin-back-link" href="{% url 'chem_core:dashboard' %}">Back to WuChem</a>
 {% endblock %}

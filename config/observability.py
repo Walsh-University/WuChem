@@ -11,8 +11,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.trace import SpanContext, TraceFlags
 
-from audit.middleware import get_request_id
-
 _otel_configured = False
 
 
@@ -102,13 +100,6 @@ def add_otel_trace_context(logger: Any, method_name: str, event_dict: dict[str, 
     return event_dict
 
 
-def add_request_id(logger: Any, method_name: str, event_dict: dict[str, Any]) -> dict[str, Any]:
-    request_id = get_request_id()
-    if request_id:
-        event_dict["request_id"] = request_id
-    return event_dict
-
-
 def structlog_pre_chain() -> Sequence[Any]:
     return (
         structlog.contextvars.merge_contextvars,
@@ -119,7 +110,6 @@ def structlog_pre_chain() -> Sequence[Any]:
         structlog.processors.StackInfoRenderer(),
         structlog.processors.format_exc_info,
         add_otel_trace_context,
-        add_request_id,
     )
 
 

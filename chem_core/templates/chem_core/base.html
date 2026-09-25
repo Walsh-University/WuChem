@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}wuchem{% endblock %}</title>
 
-  <link rel="stylesheet" href="{% static 'css/bootstrap.wuchem.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.wulims.min.css' %}">
 </head>
 
 <body class="min-vh-100">
@@ -24,7 +24,7 @@
 <!-- Top bar -->
 <nav class="navbar navbar-dark bg-primary sticky-top shadow-sm">
   <div class="container-fluid">
-    {% if user and user.is_authenticated and user.is_staff %}
+    {% if user and user.is_authenticated %}
     <button class="btn btn-primary d-md-none me-2" type="button"
             data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
       <span class="navbar-toggler-icon"></span>
@@ -61,7 +61,7 @@
 
 <div class="container-fluid">
   <div class="row g-0">
-    {% if user and user.is_authenticated and user.is_staff %}
+    {% if user and user.is_authenticated %}
 
     <!-- Sidebar column -->
     <aside class="col-md-3 col-lg-2 p-0">
@@ -75,23 +75,17 @@
 
         <div class="offcanvas-body p-0 d-flex flex-column">
           <div class="p-3 border-bottom">
-            <div class="small text-secondary">Lab</div>
-            <div class="fw-semibold">Chemistry</div>
+            <div class="small text-secondary">Signed in as</div>
+            <div class="fw-semibold">{{ user.get_role_display }}</div>
           </div>
 
           <div class="p-2">
             <div class="nav flex-column nav-pills">
               <a class="nav-link {% block nav_dashboard_active %}{% endblock %}" href="{% url 'chem_core:dashboard' %}">Dashboard</a>
-              <a class="nav-link {% block nav_customers_active %}{% endblock %}" href="{% url 'customers:list' %}">Customers</a>
-              <a class="nav-link {% block nav_projects_active %}{% endblock %}" href="{% url 'projects:list' %}">Projects</a>
-              <a class="nav-link {% block nav_experiments_active %}{% endblock %}" href="{% url 'experiments:list' %}">Experiments</a>
-              <a class="nav-link {% block nav_instruments_active %}{% endblock %}" href="{% url 'instruments:list' %}">Instruments</a>
-              <a class="nav-link {% block nav_samples_active %}{% endblock %}" href="{% url 'samples:list' %}">Samples</a>
-              <a class="nav-link {% block nav_results_active %}{% endblock %}" href="{% url 'results:list' %}">Results</a>
-              <hr class="my-2">
-
-              <a class="nav-link" href="#">Reports</a>
-              <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
+              <a class="nav-link" href="{% url 'chem_core:search' %}">Chemical search</a>
+              <a class="nav-link" href="#safety">Safety resources</a>
+              {% if user.can_manage_inventory %}<a class="nav-link" href="#inventory">Inventory</a>{% endif %}
+              {% if user.can_manage_system %}<hr class="my-2"><a class="nav-link" href="{% url 'admin:index' %}">Administration</a>{% endif %}
             </div>
           </div>
 
@@ -110,7 +104,7 @@
     </aside>
     {% endif %}
       <!-- Main content column -->
-    <main class="col-md-9 col-lg-10 px-md-4 py-4">
+    <main class="col-md-9 col-lg-10 px-md-4 py-4 pb-5">
       {% block breadcrumbs %}
       <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb mb-0">
@@ -127,6 +121,16 @@
 
   </div>
 </div>
+
+{% if user and user.is_authenticated %}
+<nav class="mobile-dock d-md-none" aria-label="Primary navigation">
+  <a class="active" href="{% url 'chem_core:dashboard' %}"><span>⌂</span>Home</a>
+  {% if user.can_manage_inventory %}<a href="#inventory"><span>▦</span>Inventory</a>{% else %}<a href="{% url 'chem_core:search' %}"><span>⌕</span>Search</a>{% endif %}
+  <a class="scan-dock" href="#scan"><span>⌁</span>Scan</a>
+  <a href="#safety"><span>◇</span>Safety</a>
+  <a href="#"><span>•••</span>More</a>
+</nav>
+{% endif %}
 
 <!-- JS: load once, at the bottom -->
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

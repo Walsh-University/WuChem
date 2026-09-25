@@ -1,159 +1,74 @@
 {% extends "chem_core/base.html" %}
-{% block title %}Dashboard • wuchem{% endblock %}
+{% block title %}Dashboard · WuChem{% endblock %}
 {% block nav_dashboard_active %}active{% endblock %}
-{% block breadcrumb_current %}Dashboard{% endblock %}
+{% block breadcrumbs %}{% endblock %}
 
 {% block content %}
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-    <div>
-        <h1 class="h3 mb-1">Dashboard</h1>
-        <div class="text-secondary">Today’s snapshot of lab work and queues.</div>
+<header class="dashboard-header mb-4">
+  <div>
+    <p class="eyebrow mb-1">{{ user.get_role_display }} workspace</p>
+    <h1 class="mb-1">Hello, {{ user.first_name|default:user.username }}.</h1>
+    <p class="text-secondary mb-0">Find a chemical or open the safety information you need.</p>
+  </div>
+  <span class="role-chip">{{ user.get_role_display }}</span>
+</header>
+
+<section class="scan-panel" id="scan" aria-labelledby="scan-title">
+  <div class="scan-frame" aria-hidden="true"><span></span></div>
+  <div class="scan-copy">
+    <p class="eyebrow text-gold mb-2">Chemical lookup</p>
+    <h2 id="scan-title">Scan or enter a barcode</h2>
+    <p>Use a handheld scanner or enter the container barcode below.</p>
+    <form method="get" action="{% url 'chem_core:search' %}" class="barcode-form">
+      <label class="visually-hidden" for="barcode">Chemical barcode or search term</label>
+      <input id="barcode" class="form-control form-control-lg" type="search" name="q" placeholder="Barcode, chemical, or CAS number" autocomplete="off">
+      <button class="btn btn-warning btn-lg" type="submit">Look up chemical</button>
+    </form>
+  </div>
+</section>
+
+<div class="dashboard-grid mt-4">
+  <section id="safety" aria-labelledby="safety-title">
+    <div class="section-heading">
+      <div><p class="eyebrow mb-1">Always available</p><h2 id="safety-title">Safety resources</h2></div>
     </div>
-    <div class="d-flex gap-2">
-        <button class="btn btn-primary" type="button">New Experiment</button>
-        <a class="btn btn-outline-secondary" href="{% url 'customers:add' %}">New Customer</a>
+    <div class="safety-grid">
+      <a class="action-tile" href="{% url 'chem_core:search' %}?type=sds"><span class="tile-symbol">SDS</span><strong>Safety data sheets</strong><small>Search current documents</small></a>
+      <a class="action-tile" href="#"><span class="tile-symbol">↘</span><strong>Disposal guidance</strong><small>Handle waste correctly</small></a>
+      <a class="action-tile" href="#"><span class="tile-symbol">!</span><strong>Spill or exposure</strong><small>Immediate response steps</small></a>
+      <a class="action-tile emergency" href="#"><span class="tile-symbol">+</span><strong>Emergency contacts</strong><small>Get help now</small></a>
     </div>
+  </section>
+
+  <aside class="notice-panel" aria-labelledby="notices-title">
+    <div class="section-heading"><div><p class="eyebrow mb-1">Campus labs</p><h2 id="notices-title">Safety notices</h2></div></div>
+    <div class="empty-state"><span aria-hidden="true">✓</span><strong>No active notices</strong><p>Important lab safety updates will appear here.</p></div>
+  </aside>
 </div>
 
-<!-- KPI cards -->
-<div class="row g-3 mb-3">
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="text-secondary small">Open Experiments</div>
-                        <div class="display-6 mb-0">12</div>
-                    </div>
-                    <span class="badge text-bg-primary">Active</span>
-                </div>
-                <div class="small text-secondary mt-2">+2 since yesterday</div>
-            </div>
-        </div>
-    </div>
+{% if user.can_manage_inventory %}
+<section class="inventory-panel mt-4" id="inventory" aria-labelledby="inventory-title">
+  <div class="section-heading">
+    <div><p class="eyebrow mb-1">Faculty tools</p><h2 id="inventory-title">Inventory attention</h2></div>
+    <a href="#">Open inventory <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="attention-grid">
+    <article><span>Low stock</span><strong>—</strong><small>Inventory records not yet configured</small></article>
+    <article><span>Expiring soon</span><strong>—</strong><small>Inventory records not yet configured</small></article>
+    <article><span>Disposal requests</span><strong>—</strong><small>Workflow not yet configured</small></article>
+  </div>
+</section>
+{% endif %}
 
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="text-secondary small">Samples Received</div>
-                        <div class="display-6 mb-0">{{ samples_received }}</div>
-                    </div>
-                    <span class="badge badge-accent">New</span>
-                </div>
-                <div class="small text-secondary mt-2">Awaiting intake: 7</div>
-            </div>
-        </div>
-    </div>
+{% if user.can_manage_system %}
+<section class="admin-panel mt-4" aria-labelledby="admin-title">
+  <div><p class="eyebrow mb-1">Administration</p><h2 id="admin-title">System management</h2><p class="mb-0">Manage users, roles, and application configuration.</p></div>
+  <a class="btn btn-outline-light" href="{% url 'admin:index' %}">Open administration</a>
+</section>
+{% endif %}
 
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="text-secondary small">Instruments Online</div>
-                        <div class="display-6 mb-0">{{ instruments_online }}</div>
-                    </div>
-                    <span class="badge text-bg-success">OK</span>
-                </div>
-                <div class="small text-secondary mt-2">Next calibration: 2 due</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-md-6 col-xl-3">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="text-secondary small">Reports Ready</div>
-                        <div class="display-6 mb-0">9</div>
-                    </div>
-                    <span class="badge text-bg-warning text-dark">Review</span>
-                </div>
-                <div class="small text-secondary mt-2">3 overdue for signoff</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Main dashboard content -->
-<div class="row g-3">
-    <div class="col-12 col-xl-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-body d-flex justify-content-between align-items-center">
-                <div class="fw-semibold">Queue</div>
-                <a href="#" class="small link-underline link-underline-opacity-0">View all</a>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover mb-0 align-middle">
-                    <thead class="table-light">
-                    <tr>
-                        <th>Experiment</th>
-                        <th>Customer</th>
-                        <th>Status</th>
-                        <th class="text-end">Updated</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="fw-semibold">EXP-1042</td>
-                        <td>Acme Co.</td>
-                        <td><span class="badge text-bg-primary">In Progress</span></td>
-                        <td class="text-end text-secondary small">10 min ago</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-semibold">EXP-1041</td>
-                        <td>Walsh Research</td>
-                        <td><span class="badge text-bg-warning text-dark">Waiting</span></td>
-                        <td class="text-end text-secondary small">1 hr ago</td>
-                    </tr>
-                    <tr>
-                        <td class="fw-semibold">EXP-1040</td>
-                        <td>Northstar Labs</td>
-                        <td><span class="badge text-bg-success">Complete</span></td>
-                        <td class="text-end text-secondary small">Yesterday</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer bg-body">
-                <div class="small text-secondary">Tip: Use filters to narrow by instrument, customer, or status.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 col-xl-4">
-        <div class="card shadow-sm mb-3">
-            <div class="card-header bg-body fw-semibold">Quick Actions</div>
-            <div class="card-body d-grid gap-2">
-                <button class="btn btn-primary">Create Experiment</button>
-                <a class="btn btn-outline-secondary" href="{% url 'samples:add' %}">Receive Sample</a>
-                <button class="btn btn-outline-secondary">Log Instrument Maintenance</button>
-                <button class="btn btn-outline-secondary">Generate Report</button>
-            </div>
-        </div>
-
-        <div class="card shadow-sm">
-            <div class="card-header bg-body fw-semibold">Recent Activity</div>
-            <div class="list-group list-group-flush">
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between">
-                        <div><span class="text-accent fw-semibold">EXP-1042</span> sample received</div>
-                        <div class="small text-secondary">12:03</div>
-                    </div>
-                    <div class="small text-secondary">Intake by Goody</div>
-                </div>
-                <div class="list-group-item">
-                    <div class="d-flex justify-content-between">
-                        <div>Instrument <span class="fw-semibold">GC-MS</span> calibration due</div>
-                        <div class="small text-secondary">Yesterday</div>
-                    </div>
-                    <div class="small text-secondary">Assigned to Lab Tech</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="recent-panel mt-4" aria-labelledby="recent-title">
+  <div class="section-heading"><div><p class="eyebrow mb-1">Your activity</p><h2 id="recent-title">Recent chemicals</h2></div></div>
+  <div class="empty-state compact"><strong>No recent chemicals</strong><p>Your recently viewed and scanned chemicals will appear here.</p></div>
+</section>
 {% endblock %}

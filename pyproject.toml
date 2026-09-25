@@ -42,7 +42,7 @@ testpaths = ["tests"]
 [tool.coverage.run]
 branch = true
 relative_files = true
-source = ["accounts", "samples", "lims_core", "projects", "instruments", "customers", "experiments", "results"]
+source = ["accounts", "chem_core", "config"]
 omit = ["*/migrations/*", "*/__init__.py"]
 
 [tool.coverage.paths]
@@ -83,14 +83,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["accounts",
-    "samples",
-    "lims_core",
-    "config",
-    "experiments",
-    "instruments",
-    "projects",
-    "customers"]
+known-first-party = ["accounts", "chem_core", "config"]
 
 [tool.ruff.format]
 quote-style = "double"

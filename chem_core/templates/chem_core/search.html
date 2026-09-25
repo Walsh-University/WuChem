@@ -7,14 +7,14 @@
 
 <form method="get" class="mb-3">
   <div class="input-group">
-    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Search…">
+    <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Barcode, chemical, or CAS number" autofocus>
     <button class="btn btn-primary">Search</button>
   </div>
 </form>
 
 {% if q %}
-<div class="text-secondary">Results for <span class="fw-semibold">{{ q }}</span> (not implemented yet).</div>
+<div class="empty-state compact">No chemical records are available yet for <span class="fw-semibold">{{ q }}</span>.</div>
 {% else %}
-<div class="text-secondary">Type something to search across Customers, Projects, Experiments, Samples.</div>
+<div class="text-secondary">Search by barcode, chemical name, product name, or CAS number.</div>
 {% endif %}
 {% endblock %}
