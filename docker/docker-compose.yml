@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:18
-    container_name: wulims_db
+    container_name: wuchem_db
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME}
