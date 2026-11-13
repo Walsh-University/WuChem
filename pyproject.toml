@@ -42,8 +42,15 @@ testpaths = ["tests"]
 [tool.coverage.run]
 branch = true
 relative_files = true
-source = ["accounts", "chem_core", "config"]
-omit = ["*/migrations/*", "*/__init__.py"]
+source = ["accounts", "chem_core", "config", "inventory"]
+omit = [
+    "*/migrations/*",
+    "*/__init__.py",
+    "config/asgi.py",
+    "config/wsgi.py",
+    "config/settings/dev.py",
+    "config/settings/prod.py",
+]
 
 [tool.coverage.paths]
 source = [
