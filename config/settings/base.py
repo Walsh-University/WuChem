@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     # local apps
     "accounts.apps.AccountsConfig",
     "chem_core",
+    "inventory.apps.InventoryConfig",
 ]
 
 

@@ -25,6 +25,7 @@ urlpatterns = [
     path("readyz/", readyz),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("chemicals/", include("inventory.urls")),
     path("", include("chem_core.urls")),
 ]
 

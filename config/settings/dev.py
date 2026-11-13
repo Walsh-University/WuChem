@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 
-from .base import *  # noqa
+load_dotenv(override=True)  # Use local development values from .env
 
-load_dotenv()  # For .env file support
+from .base import *  # noqa: E402
 
 DEBUG = True
 
