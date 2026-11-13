@@ -1,0 +1,31 @@
+{% extends "chem_core/base.html" %}
+{% block title %}{{ chemical.name }} • WuChem{% endblock %}
+{% block breadcrumb_current %}{{ chemical.name }}{% endblock %}
+
+{% block content %}
+<p><a href="{% url 'chem_core:search' %}">← Back to chemical search</a></p>
+<h1 class="h3">{{ chemical.name }}</h1>
+<dl class="row">
+  {% if chemical.cas_number %}<dt class="col-sm-3">CAS number</dt><dd class="col-sm-9">{{ chemical.cas_number }}</dd>{% endif %}
+  {% if chemical.formula %}<dt class="col-sm-3">Formula</dt><dd class="col-sm-9">{{ chemical.formula }}</dd>{% endif %}
+  {% if chemical.synonyms.all %}<dt class="col-sm-3">Alternate names</dt><dd class="col-sm-9">{% for synonym in chemical.synonyms.all %}{{ synonym.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>{% endif %}
+</dl>
+
+<section class="mb-4" aria-labelledby="sds-heading">
+  <h2 id="sds-heading" class="h5">Safety data sheets</h2>
+  {% if chemical.safety_data_sheets.all %}
+    <ul>{% for sds in chemical.safety_data_sheets.all %}<li><a href="{{ sds.url }}" target="_blank" rel="noopener">{% firstof sds.title "Safety data sheet" %}</a>{% if sds.revision_date %} (revised {{ sds.revision_date }}){% endif %}</li>{% endfor %}</ul>
+  {% else %}<p class="text-secondary">No safety data sheet is linked yet.</p>{% endif %}
+</section>
+
+<section class="mb-4" aria-labelledby="storage-heading">
+  <h2 id="storage-heading" class="h5">Storage</h2>
+  {% if chemical.storage_instructions %}<p>{{ chemical.storage_instructions }}</p>{% else %}<p class="text-secondary">No storage instructions are recorded.</p>{% endif %}
+  {% if chemical.locations.all %}<ul>{% for location in chemical.locations.all %}<li>{{ location.name }}{% if location.room %}, room {{ location.room }}{% endif %}{% if location.building %}, {{ location.building }}{% endif %}{% if location.details %} — {{ location.details }}{% endif %}</li>{% endfor %}</ul>{% else %}<p class="text-secondary">No storage location is recorded.</p>{% endif %}
+</section>
+
+<section aria-labelledby="products-heading">
+  <h2 id="products-heading" class="h5">Manufacturer products</h2>
+  {% if chemical.products.all %}<ul>{% for product in chemical.products.all %}<li>{{ product.manufacturer }}{% if product.product_name %} — {{ product.product_name }}{% endif %}{% if product.catalog_number %} ({{ product.catalog_number }}){% endif %}</li>{% endfor %}</ul>{% else %}<p class="text-secondary">No manufacturer products are recorded.</p>{% endif %}
+</section>
+{% endblock %}
