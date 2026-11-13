@@ -22,13 +22,6 @@ def dashboard(request):
 
 
 @login_required
-def search(request):
-    q = (request.GET.get("q") or "").strip()
-    # Later: search Customers/Projects/Experiments/Samples
-    return render(request, "chem_core/search.html", {"q": q})
-
-
-@login_required
 def status_public(request):
     # Customer-safe response (no internal details)
     return JsonResponse(get_system_status(include_internal=False))
