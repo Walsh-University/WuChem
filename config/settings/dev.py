@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)  # Use local development values from .env
 
-from .base import *  # noqa: E402
+from .base import *  # noqa: E402, F403
 
 DEBUG = True
 
