@@ -17,7 +17,7 @@ def _chemical_search(query):
             | Q(products__catalog_number__icontains=query)
         )
         .distinct()
-        .prefetch_related("synonyms", "products", "safety_data_sheets", "locations")
+        .prefetch_related("synonyms", "products__safety_data_sheets", "safety_data_sheets__product", "locations")
     )
 
 
@@ -31,7 +31,9 @@ def search(request):
 @login_required
 def chemical_detail(request, pk):
     chemical = get_object_or_404(
-        Chemical.objects.prefetch_related("synonyms", "products", "safety_data_sheets", "locations"),
+        Chemical.objects.prefetch_related(
+            "synonyms", "products__safety_data_sheets", "safety_data_sheets__product", "locations"
+        ),
         pk=pk,
     )
     return render(request, "inventory/chemical_detail.html", {"chemical": chemical})

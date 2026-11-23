@@ -14,7 +14,7 @@
 <section class="mb-4" aria-labelledby="sds-heading">
   <h2 id="sds-heading" class="h5">Safety data sheets</h2>
   {% if chemical.safety_data_sheets.all %}
-    <ul>{% for sds in chemical.safety_data_sheets.all %}<li><a href="{{ sds.url }}" target="_blank" rel="noopener">{% firstof sds.title "Safety data sheet" %}</a>{% if sds.revision_date %} (revised {{ sds.revision_date }}){% endif %}</li>{% endfor %}</ul>
+    <ul>{% for sds in chemical.safety_data_sheets.all %}<li><a href="{{ sds.url }}" target="_blank" rel="noopener">{% if sds.product %}{{ sds.product.manufacturer }}{% if sds.product.product_name %} {{ sds.product.product_name }}{% endif %}: {% endif %}{% firstof sds.title "Safety data sheet" %}</a>{% if sds.revision_date %} (revised {{ sds.revision_date }}){% endif %}</li>{% endfor %}</ul>
   {% else %}<p class="text-secondary">No safety data sheet is linked yet.</p>{% endif %}
 </section>
 

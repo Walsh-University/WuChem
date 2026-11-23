@@ -30,7 +30,7 @@
             {% if chemical.locations.all %}<p class="mb-2"><strong>Location:</strong> {% for location in chemical.locations.all %}{{ location.name }}{% if location.room %}, {{ location.room }}{% endif %}{% if location.building %}, {{ location.building }}{% endif %}{% if location.details %} — {{ location.details }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}</p>{% endif %}
             <div class="d-flex flex-wrap gap-2">
               <a class="btn btn-sm btn-outline-primary" href="{% url 'inventory:chemical_detail' chemical.pk %}">Chemical record</a>
-              {% for sds in chemical.safety_data_sheets.all %}<a class="btn btn-sm btn-outline-secondary" href="{{ sds.url }}" target="_blank" rel="noopener">{% firstof sds.title "Safety data sheet" %}</a>{% endfor %}
+              {% for sds in chemical.safety_data_sheets.all %}<a class="btn btn-sm btn-outline-secondary" href="{{ sds.url }}" target="_blank" rel="noopener">{% if sds.product %}{{ sds.product.manufacturer }}{% if sds.product.product_name %} {{ sds.product.product_name }}{% endif %}: {% endif %}{% firstof sds.title "Safety data sheet" %}</a>{% endfor %}
             </div>
             {% if chemical.products.all %}<p class="small text-secondary mt-3 mb-0"><strong>Manufacturer products:</strong> {% for product in chemical.products.all %}{{ product.manufacturer }}{% if product.product_name %} — {{ product.product_name }}{% endif %}{% if product.catalog_number %} ({{ product.catalog_number }}){% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}</p>{% endif %}
           </div>
