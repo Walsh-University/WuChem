@@ -1,0 +1,13 @@
+site_name: WuChem Developer Documentation
+site_description: Developer onboarding and engineering documentation for WuChem
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: mkdocs
+
+nav:
+  - Developer onboarding: index.md
+
+strict: true
