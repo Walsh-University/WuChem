@@ -82,7 +82,7 @@
           <div class="p-2">
             <div class="nav flex-column nav-pills">
               <a class="nav-link {% block nav_dashboard_active %}{% endblock %}" href="{% url 'chem_core:dashboard' %}">Dashboard</a>
-              <a class="nav-link" href="{% url 'chem_core:search' %}">Chemical search</a>
+              <a class="nav-link {% block nav_search_active %}{% endblock %}" href="{% url 'chem_core:search' %}">Chemical search</a>
               <a class="nav-link" href="#safety">Safety resources</a>
               {% if user.can_manage_inventory %}<a class="nav-link" href="#inventory">Inventory</a>{% endif %}
               {% if user.can_manage_system %}<hr class="my-2"><a class="nav-link" href="{% url 'admin:index' %}">Administration</a>{% endif %}
