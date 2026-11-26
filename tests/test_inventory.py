@@ -109,7 +109,7 @@ def test_search_results_link_to_sds_and_show_storage_and_location(signed_in_clie
 
     assert detail_response.status_code == 200
     assert "Acetone SDS" in detail_response.content.decode()
-    assert "Flinn classification</dt><dd class=\"col-sm-9\">Flammable Liquid" in detail_response.content.decode()
+    assert 'Flinn classification</dt><dd class="col-sm-9">Flammable Liquid' in detail_response.content.decode()
     assert "Science Hall" in detail_response.content.decode()
 
 
