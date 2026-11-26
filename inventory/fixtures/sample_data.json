@@ -1,0 +1,112 @@
+[
+  {
+    "model": "inventory.chemical",
+    "pk": 9001,
+    "fields": {
+      "name": "SAMPLE Acetone",
+      "cas_number": "SAMPLE-CAS-001",
+      "formula": "SAMPLE-C3H6O",
+      "storage_instructions": "SAMPLE DATA ONLY. This is not safety guidance."
+    }
+  },
+  {
+    "model": "inventory.chemical",
+    "pk": 9002,
+    "fields": {
+      "name": "SAMPLE Buffer Solution",
+      "cas_number": "SAMPLE-CAS-002",
+      "formula": "SAMPLE-MIXTURE",
+      "storage_instructions": "SAMPLE DATA ONLY. This is not safety guidance."
+    }
+  },
+  {
+    "model": "inventory.chemical",
+    "pk": 9003,
+    "fields": {
+      "name": "SAMPLE Search Only Compound",
+      "cas_number": "SAMPLE-CAS-003",
+      "formula": "SAMPLE-X1",
+      "storage_instructions": ""
+    }
+  },
+  {
+    "model": "inventory.chemicalsynonym",
+    "pk": 9001,
+    "fields": {"name": "SAMPLE Demo Solvent"}
+  },
+  {
+    "model": "inventory.chemicalsynonym",
+    "pk": 9002,
+    "fields": {"name": "SAMPLE pH Test Mix"}
+  },
+  {
+    "model": "inventory.chemical_synonyms",
+    "pk": 9001,
+    "fields": {"chemical": 9001, "chemicalsynonym": 9001}
+  },
+  {
+    "model": "inventory.chemical_synonyms",
+    "pk": 9002,
+    "fields": {"chemical": 9002, "chemicalsynonym": 9002}
+  },
+  {
+    "model": "inventory.manufacturerproduct",
+    "pk": 9001,
+    "fields": {
+      "chemical": 9001,
+      "manufacturer": "SAMPLE Supplier",
+      "product_name": "Demo Solvent Bottle",
+      "catalog_number": "SAMPLE-PROD-001"
+    }
+  },
+  {
+    "model": "inventory.manufacturerproduct",
+    "pk": 9002,
+    "fields": {
+      "chemical": 9002,
+      "manufacturer": "SAMPLE Supplier",
+      "product_name": "Demo Buffer Pack",
+      "catalog_number": "SAMPLE-PROD-002"
+    }
+  },
+  {
+    "model": "inventory.safetydatasheet",
+    "pk": 9001,
+    "fields": {
+      "chemical": 9001,
+      "title": "SAMPLE external link test (not an SDS)",
+      "url": "https://example.com/",
+      "revision_date": "2026-01-01"
+    }
+  },
+  {
+    "model": "inventory.storagelocation",
+    "pk": 9001,
+    "fields": {
+      "name": "SAMPLE Cabinet A",
+      "building": "SAMPLE Science Building",
+      "room": "SAMPLE 101",
+      "details": "SAMPLE shelf 1"
+    }
+  },
+  {
+    "model": "inventory.storagelocation",
+    "pk": 9002,
+    "fields": {
+      "name": "SAMPLE Shelf B",
+      "building": "SAMPLE Science Building",
+      "room": "SAMPLE 102",
+      "details": "SAMPLE upper shelf"
+    }
+  },
+  {
+    "model": "inventory.chemicallocation",
+    "pk": 9001,
+    "fields": {"chemical": 9001, "location": 9001}
+  },
+  {
+    "model": "inventory.chemicallocation",
+    "pk": 9002,
+    "fields": {"chemical": 9002, "location": 9002}
+  }
+]

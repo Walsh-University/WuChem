@@ -8,13 +8,14 @@
 <dl class="row">
   {% if chemical.cas_number %}<dt class="col-sm-3">CAS number</dt><dd class="col-sm-9">{{ chemical.cas_number }}</dd>{% endif %}
   {% if chemical.formula %}<dt class="col-sm-3">Formula</dt><dd class="col-sm-9">{{ chemical.formula }}</dd>{% endif %}
+  {% if chemical.flinn_classification %}<dt class="col-sm-3">Flinn classification</dt><dd class="col-sm-9">{{ chemical.flinn_classification }}</dd>{% endif %}
   {% if chemical.synonyms.all %}<dt class="col-sm-3">Alternate names</dt><dd class="col-sm-9">{% for synonym in chemical.synonyms.all %}{{ synonym.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd>{% endif %}
 </dl>
 
 <section class="mb-4" aria-labelledby="sds-heading">
   <h2 id="sds-heading" class="h5">Safety data sheets</h2>
   {% if chemical.safety_data_sheets.all %}
-    <ul>{% for sds in chemical.safety_data_sheets.all %}<li><a href="{{ sds.url }}" target="_blank" rel="noopener">{% firstof sds.title "Safety data sheet" %}</a>{% if sds.revision_date %} (revised {{ sds.revision_date }}){% endif %}</li>{% endfor %}</ul>
+    <ul>{% for sds in chemical.safety_data_sheets.all %}<li><a href="{{ sds.url }}" target="_blank" rel="noopener">{% if sds.product %}{{ sds.product.manufacturer }}{% if sds.product.product_name %} {{ sds.product.product_name }}{% endif %}: {% endif %}{% firstof sds.title "Safety data sheet" %}</a>{% if sds.revision_date %} (revised {{ sds.revision_date }}){% endif %}</li>{% endfor %}</ul>
   {% else %}<p class="text-secondary">No safety data sheet is linked yet.</p>{% endif %}
 </section>
 

@@ -20,7 +20,7 @@ class ChemicalLocationInline(admin.TabularInline):
 
 @admin.register(Chemical)
 class ChemicalAdmin(admin.ModelAdmin):
-    list_display = ("name", "cas_number", "formula")
+    list_display = ("name", "cas_number", "formula", "flinn_classification")
     search_fields = ("name", "cas_number", "formula", "synonyms__name", "products__product_name")
     inlines = (ManufacturerProductInline, SafetyDataSheetInline, ChemicalLocationInline)
     filter_horizontal = ("synonyms",)

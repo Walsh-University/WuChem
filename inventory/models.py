@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -5,6 +6,7 @@ class Chemical(models.Model):
     name = models.CharField(max_length=255, unique=True)
     cas_number = models.CharField(max_length=32, blank=True, db_index=True)
     formula = models.CharField(max_length=128, blank=True, db_index=True)
+    flinn_classification = models.CharField(max_length=255, blank=True)
     storage_instructions = models.TextField(blank=True)
     synonyms = models.ManyToManyField("ChemicalSynonym", blank=True, related_name="chemicals")
 
@@ -48,6 +50,14 @@ class ManufacturerProduct(models.Model):
 
 class SafetyDataSheet(models.Model):
     chemical = models.ForeignKey(Chemical, on_delete=models.CASCADE, related_name="safety_data_sheets")
+    product = models.ForeignKey(
+        "ManufacturerProduct",
+        on_delete=models.CASCADE,
+        related_name="safety_data_sheets",
+        null=True,
+        blank=True,
+        help_text="Leave blank for a sheet that applies to the chemical generally.",
+    )
     title = models.CharField(max_length=255, blank=True)
     url = models.URLField(max_length=1000)
     revision_date = models.DateField(null=True, blank=True)
@@ -57,6 +67,15 @@ class SafetyDataSheet(models.Model):
 
     def __str__(self):
         return self.title or f"SDS for {self.chemical.name}"
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        super().clean()
+        if self.product_id and self.chemical_id and self.product.chemical_id != self.chemical_id:
+            raise ValidationError({"product": "Select a product associated with this chemical."})
 
 
 class StorageLocation(models.Model):
