@@ -6,6 +6,7 @@ class Chemical(models.Model):
     name = models.CharField(max_length=255, unique=True)
     cas_number = models.CharField(max_length=32, blank=True, db_index=True)
     formula = models.CharField(max_length=128, blank=True, db_index=True)
+    flinn_classification = models.CharField(max_length=255, blank=True)
     storage_instructions = models.TextField(blank=True)
     synonyms = models.ManyToManyField("ChemicalSynonym", blank=True, related_name="chemicals")
 

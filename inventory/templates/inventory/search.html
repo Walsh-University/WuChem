@@ -25,6 +25,7 @@
               {% if chemical.cas_number %}CAS {{ chemical.cas_number }}{% endif %}
               {% if chemical.formula %}{% if chemical.cas_number %} · {% endif %}Formula {{ chemical.formula }}{% endif %}
             </p>
+            {% if chemical.flinn_classification %}<p class="mb-2"><strong>Flinn classification:</strong> {{ chemical.flinn_classification }}</p>{% endif %}
             {% if chemical.synonyms.all %}<p class="mb-2"><strong>Also known as:</strong> {% for synonym in chemical.synonyms.all %}{{ synonym.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>{% endif %}
             {% if chemical.storage_instructions %}<p class="mb-2"><strong>Storage:</strong> {{ chemical.storage_instructions }}</p>{% endif %}
             {% if chemical.locations.all %}<p class="mb-2"><strong>Location:</strong> {% for location in chemical.locations.all %}{{ location.name }}{% if location.room %}, {{ location.room }}{% endif %}{% if location.building %}, {{ location.building }}{% endif %}{% if location.details %} — {{ location.details }}{% endif %}{% if not forloop.last %}; {% endif %}{% endfor %}</p>{% endif %}

@@ -28,6 +28,7 @@ def chemical_record():
         name="Acetone",
         cas_number="67-64-1",
         formula="C3H6O",
+        flinn_classification="Flammable Liquid",
         storage_instructions="Store in a flammable liquids cabinet.",
     )
     synonym = ChemicalSynonym.objects.create(name="2-propanone")
@@ -102,11 +103,13 @@ def test_search_results_link_to_sds_and_show_storage_and_location(signed_in_clie
     assert reverse("inventory:chemical_detail", args=[chemical_record.pk]) in response.content.decode()
     assert "https://example.com/acetone-sds.pdf" in response.content.decode()
     assert "Store in a flammable liquids cabinet." in response.content.decode()
+    assert "Flinn classification:</strong> Flammable Liquid" in response.content.decode()
     assert "Flammables cabinet 2" in response.content.decode()
     assert "Lower shelf" in response.content.decode()
 
     assert detail_response.status_code == 200
     assert "Acetone SDS" in detail_response.content.decode()
+    assert "Flinn classification</dt><dd class=\"col-sm-9\">Flammable Liquid" in detail_response.content.decode()
     assert "Science Hall" in detail_response.content.decode()
 
 
